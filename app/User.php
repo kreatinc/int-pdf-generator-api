@@ -43,7 +43,6 @@ class User extends \TCG\Voyager\Models\User
     }
 
     public function isAdmin() {
-//        dd("hello");
         return $this->role->name === "admin";
     }
 }

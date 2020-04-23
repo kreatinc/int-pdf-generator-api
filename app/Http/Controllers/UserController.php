@@ -23,7 +23,7 @@ class UserController extends Controller
             if(!$user->isAdmin()) {
                 $data['name'] = $user->name;
                 $data['email'] = $user->email;
-                $data['role'] = $user->role->name;
+                $data['isAdmin'] = $user->isAdmin();
                 $data['token'] = $user->createToken('user')->accessToken;
                 return response()->json($data, 200);
             }
