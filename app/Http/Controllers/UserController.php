@@ -44,6 +44,6 @@ class UserController extends Controller
     public function update(TemplateRequest $request, $id) {
         $template = Template::find($id);
         $template->update($request->validated());
-        return TemplateResource::make($template)->response()->setStatusCode(202);
+        return response(['success' => 'updated'], 202);
     }
 }

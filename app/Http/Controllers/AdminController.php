@@ -77,7 +77,7 @@ class AdminController extends Controller
         }
 
         $template->update($request->validated());
-        return TemplateResource::make($template)->response()->setStatusCode(202);
+        return response(['success' => 'updated'], 202);
     }
 
     public function delete($id) {
