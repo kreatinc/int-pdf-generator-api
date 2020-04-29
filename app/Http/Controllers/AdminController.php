@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\PdfRequest;
 use App\Http\Requests\StoreTemplateRequest;
 use App\Http\Requests\TemplateRequest;
 use App\Http\Resources\TemplateResource;
@@ -11,6 +12,7 @@ use App\Template;
 use App\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
@@ -87,5 +89,12 @@ class AdminController extends Controller
         }
         $template->delete();
         return response(['success'=>'deleted'],200);
+    }
+
+    public function convertToPdf(PdfRequest $request) {
+        dd($request->all());
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadHTML($request->htmlContent);
+        return $pdf->download($request->filename.'.pdf');
     }
 }

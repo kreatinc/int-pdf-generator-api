@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\PdfRequest;
 use App\Http\Requests\TemplateRequest;
 use App\Http\Resources\TemplateResource;
 use App\Template;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
@@ -45,5 +47,11 @@ class UserController extends Controller
         $template = Template::find($id);
         $template->update($request->validated());
         return response(['success' => 'updated'], 202);
+    }
+
+    public function convertToPdf(PdfRequest $request) {
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadHTML($request->htmlContent);
+        return $pdf->download($request->filename.'.pdf');
     }
 }

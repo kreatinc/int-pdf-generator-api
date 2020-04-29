@@ -20,6 +20,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('templates', 'UserController@index');
     Route::get('templates/{id}', 'UserController@show')->middleware('can:own-template,id');
     Route::patch('templates/{id}', 'UserController@update')->middleware('can:own-template,id');
+    Route::post('pdf', 'UserController@convertToPdf');
 });
 
 
@@ -33,5 +34,7 @@ Route::group(['middleware' => ['auth:api', 'isAdmin']], function () {
         Route::get('templates/{id}', 'AdminController@show');
         Route::delete('templates/{id}', 'AdminController@delete');
         Route::patch('templates/{id}', 'AdminController@update');
+        Route::post('pdf', 'AdminController@convertToPdf');
     });
 });
+
