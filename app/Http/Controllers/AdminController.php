@@ -92,7 +92,6 @@ class AdminController extends Controller
     }
 
     public function convertToPdf(PdfRequest $request) {
-        dd($request->all());
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadHTML($request->htmlContent);
         return $pdf->download($request->filename.'.pdf');
