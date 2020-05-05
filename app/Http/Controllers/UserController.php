@@ -54,4 +54,16 @@ class UserController extends Controller
         $pdf->loadHTML($request->htmlContent);
         return $pdf->download($request->filename.'.pdf');
     }
+
+    public function UploadImage(Request $request) {
+        $file = $request->file('image');
+        $name = $file->getClientOriginalName();
+        $file->storeAs('/public/', $name);
+        return response([
+                "success" => true,
+                "file" => [
+                    "url" => url(asset("/storage/$name")),
+                ]
+        ], 200);
+    }
 }
