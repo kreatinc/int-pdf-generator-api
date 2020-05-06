@@ -99,7 +99,7 @@ class AdminController extends Controller
 
     public function UploadImage(Request $request) {
         $file = $request->file('image');
-        $name = $file->getClientOriginalName();
+        $name = time().$file->getClientOriginalName();
         $file->storeAs('/public/', $name);
         return response([
                 "success" => true,
