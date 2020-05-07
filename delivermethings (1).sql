@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 22, 2020 at 12:24 AM
+-- Generation Time: May 06, 2020 at 06:02 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.2.26
 
@@ -139,6 +139,19 @@ CREATE TABLE `failed_jobs` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `images`
+--
+
+CREATE TABLE `images` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `image` mediumblob NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `menus`
 --
 
@@ -269,12 +282,16 @@ CREATE TABLE `oauth_access_tokens` (
 --
 
 INSERT INTO `oauth_access_tokens` (`id`, `user_id`, `client_id`, `name`, `scopes`, `revoked`, `created_at`, `updated_at`, `expires_at`) VALUES
+('06c58f47a0af0932827f24494f5890809e5008fef3a199dc34561b0826985b89cd0a75eb1c2952bc', 1, 3, 'admin', '[]', 0, '2020-04-30 03:14:59', '2020-04-30 03:14:59', '2021-04-30 03:14:59'),
 ('3fb6932686ad8db99046ca0eb2cc5d6c2db021b4148b8135e18f5ad4483e9b93bc54a92a4feeaabf', 2, 3, 'user', '[]', 0, '2020-04-21 18:40:57', '2020-04-21 18:40:57', '2021-04-21 18:40:57'),
 ('4b38f3d6513da97112757f4a470b7ce200a2fcd52b34daffdbb1006610048ca3d6f71d33436d9a07', 1, 3, 'admin', '[]', 0, '2020-04-21 17:12:23', '2020-04-21 17:12:23', '2021-04-21 17:12:23'),
 ('530992ac3b2e1a5065da7f26ead01eca9d5774767e68d32b758069d7a301575c2f24ce2bce114c50', 1, 3, 'admin', '[]', 0, '2020-04-21 17:20:00', '2020-04-21 17:20:00', '2021-04-21 17:20:00'),
 ('56940a46fb99bf70bab9f4c471576f2f21a3fdc2ec63b09d172b9a9975d5c10b0402732b210cc131', 1, 3, 'admin', '[]', 0, '2020-04-21 17:14:34', '2020-04-21 17:14:34', '2021-04-21 17:14:34'),
+('87bcf2a95bd8702e711e18b5cc2a55be71b48fad84202911a30f405d3fdb4a34094a5178df921eb8', 1, 3, 'admin', '[]', 0, '2020-04-30 03:14:26', '2020-04-30 03:14:26', '2021-04-30 03:14:26'),
 ('8895dd3e87c00591285dfa7c0c920aacc1eb5b00cb59a09b584d024bafd00a5ba8134b2d425a2061', 1, 3, 'admin', '[]', 0, '2020-04-21 18:36:48', '2020-04-21 18:36:48', '2021-04-21 18:36:48'),
-('d6eca6fe3d9925dde9db6204dc06667606bf351517b243a4f108c093cff367a447b5fb7e8680b643', 1, 3, 'user', '[]', 0, '2020-04-21 17:13:20', '2020-04-21 17:13:20', '2021-04-21 17:13:20');
+('8ef6c39905c6de0772069e318023f8c83369feee96442fe49af7507cb9246dd722f15ab1b1dbe6ff', 1, 3, 'admin', '[]', 0, '2020-05-05 01:35:52', '2020-05-05 01:35:52', '2021-05-05 01:35:52'),
+('d6eca6fe3d9925dde9db6204dc06667606bf351517b243a4f108c093cff367a447b5fb7e8680b643', 1, 3, 'user', '[]', 0, '2020-04-21 17:13:20', '2020-04-21 17:13:20', '2021-04-21 17:13:20'),
+('e6f968398448389b226c2123750ccf915533f0aa42b7c2874d9f3d834bc4658adb390004b262b931', 1, 3, 'admin', '[]', 0, '2020-05-05 01:34:47', '2020-05-05 01:34:47', '2021-05-05 01:34:47');
 
 -- --------------------------------------------------------
 
@@ -503,13 +520,13 @@ INSERT INTO `settings` (`id`, `key`, `display_name`, `value`, `details`, `type`,
 (1, 'site.title', 'Site Title', 'Site Title', '', 'text', 1, 'Site'),
 (2, 'site.description', 'Site Description', 'Site Description', '', 'text', 2, 'Site'),
 (3, 'site.logo', 'Site Logo', '', '', 'image', 3, 'Site'),
-(4, 'site.google_analytics_tracking_id', 'Google Analytics Tracking ID', '', '', 'text', 4, 'Site'),
+(4, 'site.google_analytics_tracking_id', 'Google Analytics Tracking ID', NULL, '', 'text', 4, 'Site'),
 (5, 'admin.bg_image', 'Admin Background Image', '', '', 'image', 5, 'Admin'),
 (6, 'admin.title', 'Admin Title', 'Voyager', '', 'text', 1, 'Admin'),
 (7, 'admin.description', 'Admin Description', 'Welcome to Voyager. The Missing Admin for Laravel', '', 'text', 2, 'Admin'),
 (8, 'admin.loader', 'Admin Loader', '', '', 'image', 3, 'Admin'),
-(9, 'admin.icon_image', 'Admin Icon Image', '', '', 'image', 4, 'Admin'),
-(10, 'admin.google_analytics_client_id', 'Google Analytics Client ID (used for admin dashboard)', '', '', 'text', 1, 'Admin');
+(9, 'admin.icon_image', 'Admin Icon Image', 'settings\\April2020\\CR0qrvN3xODUzdnGLQzq.jpg', '', 'image', 4, 'Admin'),
+(10, 'admin.google_analytics_client_id', 'Google Analytics Client ID (used for admin dashboard)', NULL, '', 'text', 1, 'Admin');
 
 -- --------------------------------------------------------
 
@@ -525,13 +542,6 @@ CREATE TABLE `templates` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `filename` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `templates`
---
-
-INSERT INTO `templates` (`id`, `payload`, `user_id`, `created_at`, `updated_at`, `filename`) VALUES
-(10, 'test', 1, '2020-04-21 22:18:50', '2020-04-21 22:18:50', 'README.md');
 
 -- --------------------------------------------------------
 
@@ -611,7 +621,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `role_id`, `name`, `email`, `avatar`, `email_verified_at`, `password`, `remember_token`, `settings`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Admin', 'admin@admin.com', 'users/default.png', NULL, '$2y$10$vTxsCJRzUW1TINpOjTP.quHyWtNbzefBkFGg0UfGhZAOFrVAHkTJO', 'AhdjP41DcjFbRteGQpHEeTPyzlUrPQj3lxF0CscwrKjL0a5eNrOaUyrUE40O', NULL, '2020-04-11 17:25:44', '2020-04-11 17:25:44');
+(1, 1, 'Admin', 'admin@admin.com', 'users/default.png', NULL, '$2y$10$vTxsCJRzUW1TINpOjTP.quHyWtNbzefBkFGg0UfGhZAOFrVAHkTJO', 'AhdjP41DcjFbRteGQpHEeTPyzlUrPQj3lxF0CscwrKjL0a5eNrOaUyrUE40O', NULL, '2020-04-11 17:25:44', '2020-04-11 17:25:44'),
+(4, 2, 'ayyoub', 'soufiayyoub@gmail.com', 'users/default.png', NULL, '$2y$10$UZGF.nF7BkYoDSfBkb0Ws.yXD743VoYyAwGVympang18gcMXirote', NULL, '{\"locale\":\"en\"}', '2020-04-22 19:05:53', '2020-04-22 19:05:53');
 
 -- --------------------------------------------------------
 
@@ -647,6 +658,12 @@ ALTER TABLE `data_types`
 -- Indexes for table `failed_jobs`
 --
 ALTER TABLE `failed_jobs`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `images`
+--
+ALTER TABLE `images`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -783,6 +800,12 @@ ALTER TABLE `failed_jobs`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `images`
+--
+ALTER TABLE `images`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
 -- AUTO_INCREMENT for table `menus`
 --
 ALTER TABLE `menus`
@@ -834,7 +857,7 @@ ALTER TABLE `settings`
 -- AUTO_INCREMENT for table `templates`
 --
 ALTER TABLE `templates`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `translations`
@@ -846,7 +869,7 @@ ALTER TABLE `translations`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables

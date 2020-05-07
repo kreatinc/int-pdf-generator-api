@@ -8,8 +8,10 @@ use App\Http\Requests\StoreTemplateRequest;
 use App\Http\Requests\TemplateRequest;
 use App\Http\Resources\TemplateResource;
 use App\Http\Resources\UserResource;
+use App\Image;
 use App\Template;
 use App\User;
+use finfo;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -99,14 +101,27 @@ class AdminController extends Controller
 
     public function UploadImage(Request $request) {
         $file = $request->file('image');
-        $name = time().$file->getClientOriginalName();
-        $file->storeAs('/public/', $name);
-        return response([
-                "success" => true,
-                "file" => [
-                    "url" => url(asset("/storage/$name")),
-                ]
-        ], 200);
+        $contents = $file->openFile()->fread($file->getSize());
+        $image = Image::create(["image"=>$contents]);
+
+//        $file = $request->file('image');
+//        $name = time().$file->getClientOriginalName();
+//        $file->storeAs('/public/', $name);
+       return response([
+               "success" => true,
+               "file" => [
+                   "url" => url("api/admin/images/$image->id"),
+               ]
+       ], 200);
     }
 
+    public function showImage($id) {
+        $image = Image::find($id);
+        if(is_null($image)) {
+            return response(['error'=>'record not found'],404);
+        }
+        return response()->make($image->image, 200, array(
+            'Content-Type' => (new finfo(FILEINFO_MIME))->buffer($image->image)
+        ));
+    }
 }
