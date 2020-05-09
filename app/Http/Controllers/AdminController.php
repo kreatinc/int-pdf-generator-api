@@ -11,6 +11,7 @@ use App\Http\Resources\UserResource;
 use App\Image;
 use App\Template;
 use App\User;
+use Barryvdh\DomPDF\PDF;
 use finfo;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -93,12 +94,6 @@ class AdminController extends Controller
         return response(['success'=>'deleted'],200);
     }
 
-    public function convertToPdf(PdfRequest $request) {
-        $pdf = App::make('dompdf.wrapper');
-        $pdf->loadHTML($request->htmlContent);
-        return $pdf->download($request->filename.'.pdf');
-    }
-
     public function UploadImage(Request $request) {
         $file = $request->file('image');
         $contents = $file->openFile()->fread($file->getSize());
@@ -124,4 +119,5 @@ class AdminController extends Controller
             'Content-Type' => (new finfo(FILEINFO_MIME))->buffer($image->image)
         ));
     }
+
 }

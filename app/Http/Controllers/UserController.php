@@ -51,12 +51,6 @@ class UserController extends Controller
         return response(['success' => 'updated'], 202);
     }
 
-    public function convertToPdf(PdfRequest $request) {
-        $pdf = App::make('dompdf.wrapper');
-        $pdf->loadHTML($request->htmlContent);
-        return $pdf->download($request->filename.'.pdf');
-    }
-
     public function UploadImage(Request $request) {
         $file = $request->file('image');
         $contents = $file->openFile()->fread($file->getSize());
