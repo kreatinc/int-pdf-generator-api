@@ -36,7 +36,7 @@ class AdminController extends Controller
             }
 
         }
-        return response()->json(['error' => 'The Email or the password are incorrect'], 401);
+        return response()->json(['error' => 'The Email or the password are incorrect'], 403);
     }
 
     public function users() {
@@ -93,35 +93,35 @@ class AdminController extends Controller
         return response(['success'=>'deleted'],200);
     }
 
-    public function convertToPdf(PdfRequest $request) {
-        $pdf = App::make('dompdf.wrapper');
-        $pdf->loadHTML($request->htmlContent);
-        return $pdf->download($request->filename.'.pdf');
-    }
-
     public function UploadImage(Request $request) {
         $file = $request->file('image');
-        $contents = $file->openFile()->fread($file->getSize());
-        $image = Image::create(["image"=>$contents]);
+        $name = time().$file->getClientOriginalName();
+        $file->storeAs('/public/', $name);
 
-//        $file = $request->file('image');
-//        $name = time().$file->getClientOriginalName();
-//        $file->storeAs('/public/', $name);
+//        $contents = $file->openFile()->fread($file->getSize());
+//        $image = Image::create(["image"=>$contents]);
        return response([
                "success" => true,
                "file" => [
-                   "url" => url("api/admin/images/$image->id"),
+//                   "url" => url("api/admin/images/$image->id"),
+                   "url" => asset("storage/$name"),
                ]
        ], 200);
     }
 
-    public function showImage($id) {
-        $image = Image::find($id);
-        if(is_null($image)) {
-            return response(['error'=>'record not found'],404);
-        }
-        return response()->make($image->image, 200, array(
-            'Content-Type' => (new finfo(FILEINFO_MIME))->buffer($image->image)
-        ));
+//    public function showImage($id) {
+//        $image = Image::find($id);
+//        if(is_null($image)) {
+//            return response(['error'=>'record not found'],404);
+//        }
+//        return response()->make($image->image, 200, array(
+//            'Content-Type' => (new finfo(FILEINFO_MIME))->buffer($image->image)
+//        ));
+//    }
+    public function convertToPdf(PdfRequest $request) {
+        $pdf = \PDF::loadView('pdf')->setOptions(['images' => true]);
+        $pdf->loadHTML($request->htmlContent);
+        return $pdf->download($request->filename.'.pdf');
     }
+
 }

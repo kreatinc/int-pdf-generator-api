@@ -20,6 +20,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('templates', 'UserController@index');
     Route::get('templates/{id}', 'UserController@show')->middleware('can:own-template,id');
     Route::patch('templates/{id}', 'UserController@update')->middleware('can:own-template,id');
+    Route::post('/upload-image', 'UserController@UploadImage');
+//    Route::get('/images/{id}', 'UserController@showImage');
     Route::post('pdf', 'UserController@convertToPdf');
 });
 
@@ -34,14 +36,12 @@ Route::group(['middleware' => ['auth:api', 'isAdmin']], function () {
         Route::get('templates/{id}', 'AdminController@show');
         Route::delete('templates/{id}', 'AdminController@delete');
         Route::patch('templates/{id}', 'AdminController@update');
-        Route::post('pdf', 'AdminController@convertToPdf');
+        Route::post('/upload-image', 'AdminController@UploadImage');
+//        Route::get('/images/{id}', 'AdminController@showImage');
+        Route::get('pdf', 'AdminController@convertToPdf');
     });
 });
-Route::post('/upload-image', 'UserController@UploadImage');
-Route::get('/images/{id}', 'UserController@showImage');
 
-Route::post('/admin/upload-image', 'AdminController@UploadImage');
-Route::get('/admin/images/{id}', 'AdminController@showImage');
 
 
 
