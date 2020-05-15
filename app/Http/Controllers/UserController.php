@@ -77,10 +77,34 @@ class UserController extends Controller
 //        ));
 //    }
 
-    public function convertToPdf(PdfRequest $request) {
-        $body = $request->htmlContent;
-        $pdf = \PDF::setOptions(['images' => true])->loadView('pdf',compact('body'));
-        return $pdf->download($request->filename.'.pdf');
+    public function convertToPdf(PdfRequest $request)
+    {
+        $body = $this->urlConverter($request->htmlContent);
+        $pdf = \PDF::setOptions(['images' => true])->loadView('pdf', compact('body'));
+        return $pdf->download($request->filename . '.pdf');
+    }
+
+    function urlConverter($text){
+        // get all img elemets
+        $pattern = "/<img.* /";
+        preg_match_all($pattern, $text, $elements);
+        foreach ($elements[0] as $key=>$element) {
+
+            // get url from src
+            $splitedElement = explode('"',$element);
+            $url = $splitedElement[1];
+
+            // get full image name
+            $splitedSource = explode("/",$url);
+            $imgName = $splitedSource[count($splitedSource)-1];
+
+            // build new url
+            $newImageUrl = public_path(). "/storage/".$imgName;
+
+            // replace old url with the new one
+            $text = str_replace($url,$newImageUrl,$text);
+        }
+        return $text;
     }
 
 }

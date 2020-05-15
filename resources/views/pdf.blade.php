@@ -45,11 +45,15 @@
             color: white;
             text-align: center;
         }
+        main {
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
     </style>
 </head>
 <body>
-<header>header</header>
-<footer>footer</footer>
+<header>Here will be the header</header>
+<footer>Here will be the footer</footer>
 <main>
         {!! $body !!}
 </main>
