@@ -78,8 +78,9 @@ class UserController extends Controller
 //    }
 
     public function convertToPdf(PdfRequest $request) {
-        $pdf = App::make('dompdf.wrapper')->setOptions(['images' => true]);
-        $pdf->loadHTML($request->htmlContent);
+        $body = $request->htmlContent;
+        $pdf = \PDF::setOptions(['images' => true])->loadView('pdf',compact('body'));
         return $pdf->download($request->filename.'.pdf');
     }
+
 }
