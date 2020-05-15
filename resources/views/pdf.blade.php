@@ -25,7 +25,7 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 2em;
+            height: 3em;
 
             /** Extra personal styles **/
             background-color: #03a9f4;
@@ -39,17 +39,21 @@
             bottom: 0;
             left: 0;
             right: 0;
-            height: 2em;
+            height: 3em;
             /** Extra personal styles **/
             background-color: #03a9f4;
             color: white;
             text-align: center;
         }
+        main {
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
     </style>
 </head>
 <body>
-<header>header</header>
-<footer>footer</footer>
+<header>Here will be the header</header>
+<footer>Here will be the footer</footer>
 <main>
         {!! $body !!}
 </main>
