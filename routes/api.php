@@ -38,7 +38,7 @@ Route::group(['middleware' => ['auth:api', 'isAdmin']], function () {
         Route::patch('templates/{id}', 'AdminController@update');
         Route::post('/upload-image', 'AdminController@UploadImage');
 //        Route::get('/images/{id}', 'AdminController@showImage');
-        Route::get('pdf', 'AdminController@convertToPdf');
+        Route::post('pdf', 'AdminController@convertToPdf');
     });
 });
 
