@@ -25,7 +25,7 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 2em;
+            height: 3em;
 
             /** Extra personal styles **/
             background-color: #03a9f4;
@@ -39,7 +39,7 @@
             bottom: 0;
             left: 0;
             right: 0;
-            height: 2em;
+            height: 3em;
             /** Extra personal styles **/
             background-color: #03a9f4;
             color: white;
