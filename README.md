@@ -1,4 +1,4 @@
-# DeliverMeThings
+# PDF Generator
    
 ### Database configuration
     import the database file (delivermethings.sql)
