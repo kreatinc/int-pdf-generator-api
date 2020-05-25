@@ -56,36 +56,25 @@ class UserController extends Controller
         $name = time().$file->getClientOriginalName();
         $file->storeAs('/public/', $name);
 
-//        $contents = $file->openFile()->fread($file->getSize());
-//        $image = Image::create(["image"=>$contents]);
         return response([
             "success" => true,
             "file" => [
-//                   "url" => url("api/admin/images/$image->id"),
                 "url" => asset("storage/$name"),
             ]
         ], 200);
     }
 
-//    public function showImage($id) {
-//        $image = Image::find($id);
-//        if(is_null($image)) {
-//            return response(['error'=>'record not found'],404);
-//        }
-//        return response()->make($image->image, 200, array(
-//            'Content-Type' => (new finfo(FILEINFO_MIME))->buffer($image->image)
-//        ));
-//    }
-
     public function convertToPdf(PdfRequest $request)
     {
-        $body = $this->urlConverter($request->htmlContent);
-        $pdf = \PDF::setOptions(['images' => true])->loadView('pdf', compact('body'));
+        $html_content = $this->urlConverter($request->html_content);
+        $data = $request->only('name', 'email', 'logo', 'avatar', 'phone', 'primary_color');
+        $data['html_content'] = $html_content;
+        $pdf = \PDF::setOptions(['images' => true])->loadView('pdf', compact('data'));
         return $pdf->download($request->filename . '.pdf');
     }
 
     function urlConverter($text){
-        // get all img elemets
+        // get all img elements
         $pattern = "/<img.* /";
         preg_match_all($pattern, $text, $elements);
         foreach ($elements[0] as $key=>$element) {
