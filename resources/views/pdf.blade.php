@@ -2,60 +2,106 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ public_path()."/css/style.css" }}">
     <style>
         @font-face {
             font-family: 'OpenSans';
-            src: url({{ public_path('fonts\OpenSans-Regular.ttf') }}) format("truetype");
-            font-weight: 400;
+            src: url({{ public_path()."/fonts/OpenSans-Bold.ttf" }}) format("truetype");
+            font-weight: bold;
             font-style: normal;
         }
-
+        @font-face {
+            font-family: 'OpenSans';
+            src: url({{ public_path()."/fonts/OpenSans-BoldItalic.ttf" }}) format("truetype");
+            font-weight: bold;
+            font-style: italic;
+        }
+        @font-face {
+            font-family: 'OpenSans';
+            src: url({{ public_path()."/fonts/OpenSans-ExtraBold.ttf" }}) format("truetype");
+            font-weight: bold;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'OpenSans';
+            src: url({{ public_path()."/fonts/OpenSans-ExtraBoldItalic.ttf" }}) format("truetype");
+            font-weight: bold;
+            font-style: italic;
+        }
+        @font-face {
+            font-family: 'OpenSans';
+            src: url({{ public_path()."/fonts/OpenSans-Italic.ttf" }}) format("truetype");
+            font-weight: normal;
+            font-style: italic;
+        }
+        @font-face {
+            font-family: 'OpenSans';
+            src: url({{ public_path()."/fonts/OpenSans-Light.ttf" }}) format("truetype");
+            font-weight: normal;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'OpenSans';
+            src: url({{ public_path()."/fonts/OpenSans-LightItalic.ttf" }}) format("truetype");
+            font-weight: normal;
+            font-style: italic;
+        }
+        @font-face {
+            font-family: 'OpenSans';
+            src: url({{ public_path()."/fonts/OpenSans-Regular.ttf" }}) format("truetype");
+            font-weight: normal;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'OpenSans';
+            src: url({{ public_path()."/fonts/OpenSans-SemiBold.ttf" }}) format("truetype");
+            font-weight: bold;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'OpenSans';
+            src: url({{ public_path()."/fonts/OpenSans-SemiBoldItalic.ttf" }}) format("truetype");
+            font-weight: bold;
+            font-style: italic;
+        }
         @page {
             margin: 0;
         }
-
         body {
             margin: 2em;
-            font-family: "OpenSans";
+            font-family: "OpenSans" !important;
         }
-
-        /** Define the header rules **/
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3em;
-
-            /** Extra personal styles **/
-            background-color: #03a9f4;
-            color: white;
-            text-align: center;
-        }
-
-        /** Define the footer rules **/
         footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 3em;
-            /** Extra personal styles **/
-            background-color: #03a9f4;
-            color: white;
-            text-align: center;
-        }
-        main {
-            padding-top: 20px;
-            padding-bottom: 20px;
+            background-color: {{ $data['primary_color'] }}
         }
     </style>
+
 </head>
 <body>
-<header>Here will be the header</header>
-<footer>Here will be the footer</footer>
+<header>
+    <div class="logo-container">
+        <img class="img-fluid logo" src="{{ public_path()."/storage/".$data['logo'] }}" alt="logo">
+    </div>
+</header>
+<footer>
+    <table class="table">
+        <tr>
+            <td class="user-image">
+                <img class="img-fluid avatar" src="{{ public_path()."/storage/".$data['avatar'] }}" alt="avatar">
+            </td>
+            <td class="user-credential">
+                <p class="user-name">{{ $data['name'] }}</p>
+                <p>{{ $data['email'] }}</p>
+                <p>{{ $data['phone'] }}</p>
+            </td>
+            <td class="footer-title">
+                <h2>Get in touch <br> to get started!</h2>
+            </td>
+        </tr>
+    </table>
+</footer>
 <main>
-        {!! $body !!}
+    {!! $data['html_content'] !!}
 </main>
 </body>
 </html>

@@ -24,8 +24,14 @@ class PdfRequest extends FormRequest
     public function rules()
     {
         return [
-            'htmlContent' => 'required',
+            'html_content' => 'required',
             'filename' => 'required',
+            'email' => 'required|email',
+            'name' => 'required',
+            'logo' => 'required',
+            'avatar' => 'required',
+            'phone' => 'required',
+            'primary_color' => 'required|max:7',
         ];
     }
 }
