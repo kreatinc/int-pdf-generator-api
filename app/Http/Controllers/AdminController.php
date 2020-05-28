@@ -116,9 +116,9 @@ class AdminController extends Controller
 
     public function convertToPdf(PdfRequest $request)
     {
-        $html_content = $this->urlConverter($request->html_content);
-        $data = $request->only('name', 'logo', 'avatar', 'phone', 'primary_color');
-        $data['html_content'] = $html_content;
+        $htmlContent = $this->urlConverter($request->htmlContent);
+        $data = $request->only('name', 'logo', 'avatar', 'phone', 'primaryColor');
+        $data['htmlContent'] = $htmlContent;
         $pdf = \PDF::setOptions(['images' => true])->loadView('pdf', compact('data'));
         return $pdf->download($request->filename . '.pdf');
     }

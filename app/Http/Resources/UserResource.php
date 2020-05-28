@@ -21,8 +21,8 @@ class UserResource extends JsonResource
             'phone' => $this->phone,
             'avatar' => $this->avatar,
             'logo' => $this->logo,
-            'primaryColor' => $this->primary_color,
-            'secondaryColor' => $this->secondary_color,
+            'primaryColor' => $this->primaryColor,
+            'secondaryColor' => $this->secondaryColor,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

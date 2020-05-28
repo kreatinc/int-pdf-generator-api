@@ -29,8 +29,8 @@ class UserController extends Controller
 
             if (!$user->isAdmin()) {
                 $data = $user->only('id','name','email','phone','avatar','logo');
-                $data['primaryColor'] = $user->primary_color;
-                $data['secondaryColor'] = $user->secondary_color;
+                $data['primaryColor'] = $user->primaryColor;
+                $data['secondaryColor'] = $user->secondaryColor;
                 $data['isAdmin'] = $user->isAdmin();
                 $data['token'] = $user->createToken('user')->accessToken;
                 return response()->json($data, 200);
@@ -84,9 +84,9 @@ class UserController extends Controller
 
     public function convertToPdf(PdfRequest $request)
     {
-        $html_content = $this->urlConverter($request->html_content);
-        $data = $request->only('name', 'email', 'logo', 'avatar', 'phone', 'primary_color');
-        $data['html_content'] = $html_content;
+        $htmlContent = $this->urlConverter($request->htmlContent);
+        $data = $request->only('name', 'email', 'logo', 'avatar', 'phone', 'primaryColor');
+        $data['htmlContent'] = $htmlContent;
         $pdf = \PDF::setOptions(['images' => true])->loadView('pdf', compact('data'));
         return $pdf->download($request->filename . '.pdf');
     }

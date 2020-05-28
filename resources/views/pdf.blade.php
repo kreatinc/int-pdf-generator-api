@@ -72,7 +72,7 @@
             font-family: "OpenSans" !important;
         }
         footer {
-            background-color: {{ $data['primary_color'] }}
+            background-color: {{ $data['primaryColor'] }}
         }
     </style>
 
@@ -101,7 +101,7 @@
     </table>
 </footer>
 <main>
-    {!! $data['html_content'] !!}
+    {!! $data['htmlContent'] !!}
 </main>
 </body>
 </html>
