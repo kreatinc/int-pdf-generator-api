@@ -1,7 +1,7 @@
 # PDF Generator
    
 ### Database configuration
-    import the database file (delivermethings.sql)
+    import the database file (edit_me.sql)
 ### Commandes:
 + composer install
 + cp .env.example .env
