@@ -28,7 +28,9 @@ class UserController extends Controller
             $user = Auth::user();
 
             if (!$user->isAdmin()) {
-                $data = $user->only('id','name','email','phone','avatar','logo','primary_color','secondary_color');
+                $data = $user->only('id','name','email','phone','avatar','logo');
+                $data['primaryColor'] = $user->primary_color;
+                $data['secondaryColor'] = $user->secondary_color;
                 $data['isAdmin'] = $user->isAdmin();
                 $data['token'] = $user->createToken('user')->accessToken;
                 return response()->json($data, 200);
