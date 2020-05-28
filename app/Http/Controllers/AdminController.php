@@ -39,6 +39,15 @@ class AdminController extends Controller
         return response()->json(['error' => 'The Email or the password are incorrect'], 403);
     }
 
+    public function logout(Request $request)
+    {
+        if($request->user()) {
+            $request->user()->token()->revoke();
+            return response(['success' => 'you are logged out'], 200);
+        }
+        return response(['error' => 'you are already logged out'], 401);
+    }
+
     public function users() {
         // get users who are doesn't have admin role
         $users = User::whereDoesntHave('role',function (Builder $query){

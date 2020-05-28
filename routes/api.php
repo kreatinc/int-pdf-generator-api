@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 // user routes
 Route::post('login', 'UserController@login');
 Route::group(['middleware' => 'auth:api'], function () {
+    Route::post('logout', 'UserController@logout');
     Route::get('templates', 'UserController@index');
     Route::get('templates/{id}', 'UserController@show')->middleware('can:own-template,id');
     Route::patch('templates/{id}', 'UserController@update')->middleware('can:own-template,id');
@@ -28,6 +29,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 Route::post('admin/login', 'AdminController@login');
 Route::group(['middleware' => ['auth:api', 'isAdmin']], function () {
     Route::prefix('admin')->group(function () {
+        Route::post('logout', 'AdminController@logout');
         Route::get('users', 'AdminController@users');
         Route::get('templates', 'AdminController@templates');
         Route::post('templates', 'AdminController@store');
