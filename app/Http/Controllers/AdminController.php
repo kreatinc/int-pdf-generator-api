@@ -28,7 +28,7 @@ class AdminController extends Controller
         if (Auth::attempt($credential)) {
             $user = Auth::user();
             if($user->isAdmin()) {
-                $data = $user;
+                $data = $user->only('id','name','email','phone','avatar','logo','primary_color','secondary_color');
                 $data['isAdmin'] = $user->isAdmin();
                 $data['token'] = $user->createToken('admin')->accessToken;
                 return response()->json($data, 200);
