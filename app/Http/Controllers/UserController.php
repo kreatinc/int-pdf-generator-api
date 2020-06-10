@@ -71,21 +71,18 @@ class UserController extends Controller
 
     public function UploadImage(Request $request)
     {
-        $name = null;
+        $path = null;
         if ($request->has('logo')) {
             // user logo
-            $name = $this->storeLogo($request->file('logo'), $request->user());
+            $path = $this->storeLogo($request->file('logo'), $request-user());
         }elseif ($request->has('avatar')) {
-            // user logo
-            $name = $this->storeAvatar($request->file('avatar'), User::find(4));
+            // user avatar
+            $path = $this->storeAvatar($request->file('avatar'), $request-user());
         } else {
             // user template image
-            $file = $request->file('image');
-            $name = time() . "." . $file->getClientOriginalExtension();
-            $file->move(public_path() . "/images/templates", $name);
-            $name = "templates/$name";
+            $path = $this->storeTemplateImage($request->file('image'));
         }
-        return response(["success" => true, "file" => ["url" => asset("images/$name")]], 200);
+        return response(["success" => true, "file" => ["url" => asset("images/$path")]], 200);
     }
 
     public function convertToPdf(PdfRequest $request)
@@ -128,12 +125,12 @@ class UserController extends Controller
 
         // delete old logo if it is not the default one
         // we can't the delete the default one because it is used as the the default logo for our upcoming users
-        if ($user->logo !== "users/logo.jpg") {
+        if ($user->logo !== "default.jpg") {
             File::delete(public_path() . '/images/logos/' . $user->logo);
         }
-        $name = "logos/$name";
         $user->update(['logo' => $name]);
-        return $name;
+        $path = "logos/$name";
+        return $path;
     }
 
     private function storeAvatar($file, $user)
@@ -143,11 +140,19 @@ class UserController extends Controller
 
         // delete old logo if it is not the default one
         // we can't the delete the default one because it is used as the the default logo for our upcoming users
-        if ($user->avatar !== "users/default.jpg") {
+        if ($user->avatar !== "default.jpg") {
             File::delete(public_path() . '/images/avatars/' . $user->avatar);
         }
-        $name = "avatars/$name";
         $user->update(['avatar' => $name]);
-        return $name;
+        $path = "avatars/$name";
+        return $path;
+    }
+
+    private function storeTemplateImage($file)
+    {
+        $name = time() . "." . $file->getClientOriginalExtension();
+        $file->move(public_path() . "/images/templates", $name);
+        $path = "templates/$name";
+        return $path;
     }
 }
