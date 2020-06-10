@@ -9,6 +9,7 @@ use App\Http\Resources\TemplateResource;
 use App\Http\Resources\UserResource;
 use App\Image;
 use App\Template;
+use App\User;
 use finfo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -74,6 +75,9 @@ class UserController extends Controller
         if ($request->has('logo')) {
             // user logo
             $name = $this->storeLogo($request->file('logo'), $request->user());
+        }elseif ($request->has('avatar')) {
+            // user logo
+            $name = $this->storeAvatar($request->file('avatar'), User::find(4));
         } else {
             // user template image
             $file = $request->file('image');
@@ -125,10 +129,25 @@ class UserController extends Controller
         // delete old logo if it is not the default one
         // we can't the delete the default one because it is used as the the default logo for our upcoming users
         if ($user->logo !== "users/logo.jpg") {
-            File::delete(public_path() . '/images/users' . $user->logo);
+            File::delete(public_path() . '/images/users/' . $user->logo);
         }
         $name = "users/$name";
         $user->update(['logo' => $name]);
+        return $name;
+    }
+
+    private function storeAvatar($file, $user)
+    {
+        $name = time() . "." . $file->getClientOriginalExtension();
+        $file->move(public_path() . "/images/users", $name);
+
+        // delete old logo if it is not the default one
+        // we can't the delete the default one because it is used as the the default logo for our upcoming users
+        if ($user->avatar !== "users/default.jpg") {
+            File::delete(public_path() . '/images/' . $user->avatar);
+        }
+        $name = "users/$name";
+        $user->update(['avatar' => $name]);
         return $name;
     }
 }
