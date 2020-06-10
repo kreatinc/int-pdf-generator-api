@@ -11,11 +11,12 @@ header {
 }
 
 header .logo-container .logo {
-    width: 100px;
+    width: 10%;
+    height: 100%;
 }
 
 main {
-    padding-top: 4em;
+    padding-top: 6em;
     padding-bottom: 4em;
 }
 
