@@ -6,17 +6,10 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\PdfRequest;
 use App\Http\Requests\TemplateRequest;
 use App\Http\Resources\TemplateResource;
-use App\Http\Resources\UserResource;
-use App\Image;
 use App\Template;
-use App\User;
-use finfo;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -87,35 +80,11 @@ class UserController extends Controller
 
     public function convertToPdf(PdfRequest $request)
     {
-        $htmlContent = $this->urlConverter($request->htmlContent);
+        $htmlContent = str_replace(url(''), public_path(), $request->htmlContent);
         $data = $request->only('name', 'email', 'logo', 'avatar', 'phone', 'primaryColor');
         $data['htmlContent'] = $htmlContent;
         $pdf = \PDF::setOptions(['images' => true])->loadView('pdf', compact('data'));
         return $pdf->download($request->filename . '.pdf');
-    }
-
-    function urlConverter($text)
-    {
-        // get all img elements
-        $pattern = "/<img.* /";
-        preg_match_all($pattern, $text, $elements);
-        foreach ($elements[0] as $key => $element) {
-
-            // get url from src
-            $splitedElement = explode('"', $element);
-            $url = $splitedElement[1];
-
-            // get full image name and it's parent folder
-            $splitedSource = explode("/", $url);
-            $imgName = $splitedSource[count($splitedSource) - 2] ."/". $splitedSource[count($splitedSource) - 1];
-
-            // build new url
-            $newImageUrl = public_path() . "/images/" . $imgName;
-
-            // replace old url with the new one
-            $text = str_replace($url, $newImageUrl, $text);
-        }
-        return $text;
     }
 
     private function storeLogo($file, $user)

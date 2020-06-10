@@ -80,14 +80,14 @@
 <body>
 <header>
     <div class="logo-container">
-        <img class="img-fluid logo" src="{{ public_path()."/storage/".$data['logo'] }}" alt="logo">
+        <img class="img-fluid logo" src="{{ public_path()."/images/logos/".$data['logo'] }}" alt="logo">
     </div>
 </header>
 <footer>
     <table class="table">
         <tr>
             <td class="user-image">
-                <img class="img-fluid avatar" src="{{ public_path()."/storage/".$data['avatar'] }}" alt="avatar">
+                <img class="img-fluid avatar" src="{{ public_path()."/images/avatars/".$data['avatar'] }}" alt="avatar">
             </td>
             <td class="user-credential">
                 <p class="user-name">{{ $data['name'] }}</p>

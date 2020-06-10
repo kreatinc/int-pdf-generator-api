@@ -8,14 +8,12 @@ use App\Http\Requests\StoreTemplateRequest;
 use App\Http\Requests\TemplateRequest;
 use App\Http\Resources\TemplateResource;
 use App\Http\Resources\UserResource;
-use App\Image;
 use App\Template;
 use App\User;
-use finfo;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 
 class AdminController extends Controller
 {
@@ -114,10 +112,10 @@ class AdminController extends Controller
         $path = null;
         if ($request->has('logo')) {
             // user logo
-            $path = $this->storeLogo($request->file('logo'), $request-user());
+            $path = $this->storeLogo($request->file('logo'), $request->user());
         }elseif ($request->has('avatar')) {
             // user avatar
-            $path = $this->storeAvatar($request->file('avatar'), $request-user());
+            $path = $this->storeAvatar($request->file('avatar'), $request->user());
         } else {
             // user template image
             $path = $this->storeTemplateImage($request->file('image'));
@@ -126,42 +124,18 @@ class AdminController extends Controller
         return response([
             "success" => true,
             "file" => [
-                "url" => asset("storage/$path"),
+                "url" => asset("images/$path"),
             ]
         ], 200);
     }
 
     public function convertToPdf(PdfRequest $request)
     {
-        $htmlContent = $this->urlConverter($request->htmlContent);
-        $data = $request->only('name', 'logo', 'avatar', 'phone', 'primaryColor');
+        $htmlContent = str_replace(url(''), public_path(), $request->htmlContent);
+        $data = $request->only('name', 'email', 'logo', 'avatar', 'phone', 'primaryColor');
         $data['htmlContent'] = $htmlContent;
         $pdf = \PDF::setOptions(['images' => true])->loadView('pdf', compact('data'));
         return $pdf->download($request->filename . '.pdf');
-    }
-
-    function urlConverter($text)
-    {
-        // get all img elements
-        $pattern = "/<img.* /";
-        preg_match_all($pattern, $text, $elements);
-        foreach ($elements[0] as $key => $element) {
-
-            // get url from src
-            $splitedElement = explode('"', $element);
-            $url = $splitedElement[1];
-
-            // get full image name and it's parent folder
-            $splitedSource = explode("/", $url);
-            $imgName = $splitedSource[count($splitedSource) - 2] ."/". $splitedSource[count($splitedSource) - 1];
-
-            // build new url
-            $newImageUrl = public_path() . "/images/" . $imgName;
-
-            // replace old url with the new one
-            $text = str_replace($url, $newImageUrl, $text);
-        }
-        return $text;
     }
 
     private function storeLogo($file, $user)
