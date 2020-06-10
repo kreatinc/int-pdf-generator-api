@@ -124,14 +124,14 @@ class UserController extends Controller
     private function storeLogo($file, $user)
     {
         $name = time() . "." . $file->getClientOriginalExtension();
-        $file->move(public_path() . "/images/users", $name);
+        $file->move(public_path() . "/images/logos", $name);
 
         // delete old logo if it is not the default one
         // we can't the delete the default one because it is used as the the default logo for our upcoming users
         if ($user->logo !== "users/logo.jpg") {
-            File::delete(public_path() . '/images/users/' . $user->logo);
+            File::delete(public_path() . '/images/logos/' . $user->logo);
         }
-        $name = "users/$name";
+        $name = "logos/$name";
         $user->update(['logo' => $name]);
         return $name;
     }
@@ -139,14 +139,14 @@ class UserController extends Controller
     private function storeAvatar($file, $user)
     {
         $name = time() . "." . $file->getClientOriginalExtension();
-        $file->move(public_path() . "/images/users", $name);
+        $file->move(public_path() . "/images/avatars", $name);
 
         // delete old logo if it is not the default one
         // we can't the delete the default one because it is used as the the default logo for our upcoming users
         if ($user->avatar !== "users/default.jpg") {
-            File::delete(public_path() . '/images/' . $user->avatar);
+            File::delete(public_path() . '/images/avatars/' . $user->avatar);
         }
-        $name = "users/$name";
+        $name = "avatars/$name";
         $user->update(['avatar' => $name]);
         return $name;
     }
