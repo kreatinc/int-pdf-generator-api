@@ -27,8 +27,8 @@ class AdminController extends Controller
         // create a token and return it
         if (Auth::attempt($credential)) {
             $user = Auth::user();
-            if($user->isAdmin()) {
-                $data = $user->only('id','name','email','phone','avatar','logo');
+            if ($user->isAdmin()) {
+                $data = $user->only('id', 'name', 'email', 'phone', 'avatar', 'logo');
                 $data['primaryColor'] = $user->primaryColor;
                 $data['secondaryColor'] = $user->secondaryColor;
                 $data['isAdmin'] = $user->isAdmin();
@@ -42,71 +42,79 @@ class AdminController extends Controller
 
     public function logout(Request $request)
     {
-        if($request->user()) {
+        if ($request->user()) {
             $request->user()->token()->revoke();
             return response(['success' => 'you are logged out'], 200);
         }
         return response(['error' => 'you are already logged out'], 401);
     }
 
-    public function users() {
+    public function users()
+    {
         // get users who are doesn't have admin role
-        $users = User::whereDoesntHave('role',function (Builder $query){
-            $query->where('name','admin');
+        $users = User::whereDoesntHave('role', function (Builder $query) {
+            $query->where('name', 'admin');
         })->get();
         return UserResource::collection($users)->response()->setStatusCode(200);
     }
 
-    public function templates() {
+    public function templates()
+    {
         // get users who are doesn't have admin role
         $templates = Template::all();
         return TemplateResource::collection($templates)->response()->setStatusCode(200);
     }
 
-    public function store(StoreTemplateRequest $request) {
+    public function store(StoreTemplateRequest $request)
+    {
 
         $users = User::find($request->users_id);
         foreach ($users as $user) {
             $user->templates()->create([
                 'payload' => $request->payload,
-                'filename'=> $request->filename,
+                'filename' => $request->filename,
             ]);
         }
 
         return TemplateResource::collection($users)->response()->setStatusCode(201);
     }
 
-    public function show($id) {
+    public function show($id)
+    {
         $template = Template::find($id);
-        if(is_null($template)) {
-            return response(['error'=>'record not found'],404);
+        if (is_null($template)) {
+            return response(['error' => 'record not found'], 404);
         }
         return TemplateResource::make($template)->response()->setStatusCode(200);
     }
 
-    public function update(TemplateRequest $request, $id) {
+    public function update(TemplateRequest $request, $id)
+    {
         $template = Template::find($id);
-        if(is_null($template)) {
-            return response(['error'=>'record not found'],404);
+        if (is_null($template)) {
+            return response(['error' => 'record not found'], 404);
         }
 
         $template->update($request->validated());
         return response(['success' => 'updated'], 202);
     }
 
-    public function delete($id) {
+    public function delete($id)
+    {
         $template = Template::find($id);
-        if(is_null($template)) {
-            return response(['error'=>'record not found'],404);
+        if (is_null($template)) {
+            return response(['error' => 'record not found'], 404);
         }
         $template->delete();
-        return response(['success'=>'deleted'],200);
+        return response(['success' => 'deleted'], 200);
     }
 
-    public function UploadImage(Request $request) {
+    public function UploadImage(Request $request)
+    {
         $file = $request->file('image');
-        $name = time().$file->getClientOriginalName();
-        $file->storeAs('/public/', $name);
+        $name = time() . $file->getClientOriginalName();
+        $file->move(public_path() . "/images/templates", $name);
+        $name = "templates/$name";
 
         return response([
             "success" => true,
@@ -125,25 +133,26 @@ class AdminController extends Controller
         return $pdf->download($request->filename . '.pdf');
     }
 
-    function urlConverter($text){
+    function urlConverter($text)
+    {
         // get all img elements
         $pattern = "/<img.* /";
         preg_match_all($pattern, $text, $elements);
-        foreach ($elements[0] as $key=>$element) {
+        foreach ($elements[0] as $key => $element) {
 
             // get url from src
-            $splitedElement = explode('"',$element);
+            $splitedElement = explode('"', $element);
             $url = $splitedElement[1];
 
-            // get full image name
-            $splitedSource = explode("/",$url);
-            $imgName = $splitedSource[count($splitedSource)-1];
+            // get full image name and it's parent folder
+            $splitedSource = explode("/", $url);
+            $imgName = $splitedSource[count($splitedSource) - 2] ."/". $splitedSource[count($splitedSource) - 1];
 
             // build new url
-            $newImageUrl = public_path(). "/storage/".$imgName;
+            $newImageUrl = public_path() . "/images/" . $imgName;
 
             // replace old url with the new one
-            $text = str_replace($url,$newImageUrl,$text);
+            $text = str_replace($url, $newImageUrl, $text);
         }
         return $text;
     }

@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
@@ -28,7 +29,7 @@ class UserController extends Controller
             $user = Auth::user();
 
             if (!$user->isAdmin()) {
-                $data = $user->only('id','name','email','phone','avatar','logo');
+                $data = $user->only('id', 'name', 'email', 'phone', 'avatar', 'logo');
                 $data['primaryColor'] = $user->primaryColor;
                 $data['secondaryColor'] = $user->secondaryColor;
                 $data['isAdmin'] = $user->isAdmin();
@@ -76,10 +77,11 @@ class UserController extends Controller
         } else {
             // user template image
             $file = $request->file('image');
-            $name = time() .".". $file->getClientOriginalExtension();
-            $file->storeAs('/public/', $name);
+            $name = time() . "." . $file->getClientOriginalExtension();
+            $file->move(public_path() . "/images/templates", $name);
+            $name = "templates/$name";
         }
-        return response(["success" => true,"file" => ["url" => asset("storage/$name")]],200);
+        return response(["success" => true, "file" => ["url" => asset("images/$name")]], 200);
     }
 
     public function convertToPdf(PdfRequest $request)
@@ -102,12 +104,12 @@ class UserController extends Controller
             $splitedElement = explode('"', $element);
             $url = $splitedElement[1];
 
-            // get full image name
+            // get full image name and it's parent folder
             $splitedSource = explode("/", $url);
-            $imgName = $splitedSource[count($splitedSource) - 1];
+            $imgName = $splitedSource[count($splitedSource) - 2] ."/". $splitedSource[count($splitedSource) - 1];
 
             // build new url
-            $newImageUrl = public_path() . "/storage/" . $imgName;
+            $newImageUrl = public_path() . "/images/" . $imgName;
 
             // replace old url with the new one
             $text = str_replace($url, $newImageUrl, $text);
@@ -115,15 +117,15 @@ class UserController extends Controller
         return $text;
     }
 
-    private function storeLogo($file, $user) {
-        $name = time() .".". $file->getClientOriginalExtension();
-        $file->storeAs('/public/users/', $name);
+    private function storeLogo($file, $user)
+    {
+        $name = time() . "." . $file->getClientOriginalExtension();
+        $file->move(public_path() . "/images/users", $name);
 
         // delete old logo if it is not the default one
         // we can't the delete the default one because it is used as the the default logo for our upcoming users
-
         if ($user->logo !== "users/logo.jpg") {
-            Storage::delete("/public/".$user->logo);
+            File::delete(public_path() . '/images/users' . $user->logo);
         }
         $name = "users/$name";
         $user->update(['logo' => $name]);
