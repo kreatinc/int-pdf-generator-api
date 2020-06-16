@@ -67,15 +67,21 @@ class UserController extends Controller
         $path = null;
         if ($request->has('logo')) {
             // user logo
-            $path = $this->storeLogo($request->file('logo'), $request-user());
+            $path = $this->storeLogo($request->file('logo'), $request->user());
         }elseif ($request->has('avatar')) {
             // user avatar
-            $path = $this->storeAvatar($request->file('avatar'), $request-user());
+            $path = $this->storeAvatar($request->file('avatar'), $request->user());
         } else {
             // user template image
             $path = $this->storeTemplateImage($request->file('image'));
         }
-        return response(["success" => true, "file" => ["url" => asset("images/$path")]], 200);
+
+        return response([
+            "success" => true,
+            "file" => [
+                "url" => asset("images/$path"),
+            ]
+        ], 200);
     }
 
     public function convertToPdf(PdfRequest $request)
