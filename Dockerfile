@@ -35,7 +35,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 RUN groupadd -g 1000 www
 RUN useradd -u 1000 -ms /bin/bash -g www www
 RUN usermod -a -G www-data www
-RUN chown root:root /var/www
+RUN chown $USER:$USER /var/www
 RUN chmod 755 /var/www/
 RUN chown -R www-data:www-data /var/www/
 RUN chmod -R 774 /var/www/
