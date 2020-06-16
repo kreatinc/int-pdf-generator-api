@@ -43,9 +43,6 @@ RUN chown -R www-data:www-data \
 
 # Copy existing application directory permissions
 COPY --chown=www:www . /var/www
-RUN chown -R www-data:www-data \
-    /var/www/storage \
-    /var/www/bootstrap/cache
 
 # Change current user to www
 USER root
@@ -53,4 +50,4 @@ USER root
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
-CMD ["php-fpm"]
+CMD ["php-fpm","php artisan key:generate","php artisan config:cache"]
