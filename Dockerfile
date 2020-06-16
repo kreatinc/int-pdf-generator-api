@@ -48,7 +48,7 @@ RUN chown -R www-data:www-data \
     /var/www/bootstrap/cache
 
 # Change current user to www
-USER www
+USER root
 
 
 # Expose port 9000 and start php-fpm server
