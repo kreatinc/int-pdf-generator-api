@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
@@ -141,12 +142,12 @@ class AdminController extends Controller
     private function storeLogo($file, $user)
     {
         $name = time() . "." . $file->getClientOriginalExtension();
-        $file->move(public_path() . "/images/logos", $name);
+        $file->storeAs("/images/logos", $name);
 
         // delete old logo if it is not the default one
         // we can't the delete the default one because it is used as the the default logo for our upcoming users
         if ($user->logo !== "default.jpg") {
-            File::delete(public_path() . '/images/logos/' . $user->logo);
+            Storage::delete('/images/logos/' . $user->logo);
         }
         $user->update(['logo' => $name]);
         $path = "logos/$name";
@@ -156,12 +157,12 @@ class AdminController extends Controller
     private function storeAvatar($file, $user)
     {
         $name = time() . "." . $file->getClientOriginalExtension();
-        $file->move(public_path() . "/images/avatars", $name);
+        $file->storeAs("/images/avatars", $name);
 
         // delete old logo if it is not the default one
         // we can't the delete the default one because it is used as the the default logo for our upcoming users
         if ($user->avatar !== "default.jpg") {
-            File::delete(public_path() . '/images/avatars/' . $user->avatar);
+            Storage::delete('/images/avatars/' . $user->avatar);
         }
         $user->update(['avatar' => $name]);
         $path = "avatars/$name";
@@ -171,7 +172,7 @@ class AdminController extends Controller
     private function storeTemplateImage($file)
     {
         $name = time() . "." . $file->getClientOriginalExtension();
-        $file->move(public_path() . "/images/templates", $name);
+        $file->storeAs("/images/templates", $name);
         $path = "templates/$name";
         return $path;
     }
